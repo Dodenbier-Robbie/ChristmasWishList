@@ -1,25 +1,25 @@
 package rdodenbier.byui.edu.christmaswishlist;
 
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
     EditText uname, password;
-    Button submitLogin, submitCreateAccount;
+    Button submit, createAccount;
 
     JSONParser jParser = new JSONParser();
 
@@ -31,50 +31,54 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViewsById();
-        submitLogin.setOnClickListener(new View.OnClickListener() {
+        submit.setOnClickListener(new View.OnClickListener() {
 
             @Override
-            public void onClick(View v) {
-                new getLogin().execute();
+            public void onClick(View arg0) {
+                // execute method invokes doInBackground() where we open a Http URL connection using the given Servlet URL
+                //and get output response from InputStream and return it.
+                new Login().execute();
+
             }
         });
 
-        submitCreateAccount.setOnClickListener(new View.OnClickListener() {
-
+        createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent createAccount = new Intent(getApplicationContext(), CreateAccount.class);
-                createAccount.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(createAccount);
+                Intent createNewAccount = new Intent(getApplicationContext(), CreateAccount.class);
+                startActivity(createNewAccount);
             }
         });
     }
-
     private void findViewsById() {
 
         uname = (EditText) findViewById(R.id.txtUser);
         password = (EditText) findViewById(R.id.txtPass);
+        submit = (Button) findViewById(R.id.button1);
+        createAccount = (Button) findViewById(R.id.button2);
     }
 
-    private class getLogin extends AsyncTask<String, String, String> {
+    private class Login extends AsyncTask<String, String, String>{
 
         @Override
-        protected String doInBackground(String... String) {
+        protected String doInBackground(String... args) {
+            // Getting username and password from user input
             String username = uname.getText().toString();
             String pass = password.getText().toString();
 
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("username", username));
-            params.add(new BasicNameValuePair("password", pass));
-            json = jParser.makeHttpRequest(url_login, "POST", params);
+            params.add(new BasicNameValuePair("u",username));
+            params.add(new BasicNameValuePair("p",pass));
+            json = jParser.makeHttpRequest(url_login, "GET", params);
             String s;
 
             try {
-                s = json.getString("info");
+                s= json.getString("info");
                 Log.d("Msg", json.getString("info"));
-                if (s.equals("success")) {
+                if(s.equals("success")){
                     Intent login = new Intent(getApplicationContext(), CreateAccount.class);
                     login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(login);
                     finish();
                 }
             } catch (JSONException e) {
@@ -84,5 +88,6 @@ public class MainActivity extends AppCompatActivity {
 
             return null;
         }
+
     }
 }
