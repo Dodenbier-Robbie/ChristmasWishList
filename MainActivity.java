@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent createAccount = new Intent(getApplicationContext(), CreateAccount.class);
                 createAccount.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(createAccount);
-                finish();
             }
         });
     }
