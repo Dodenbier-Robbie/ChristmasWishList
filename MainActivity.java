@@ -85,15 +85,18 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(login);
                     finish();
                 }
-                else {
-                    error.setText("Invalid username or password. Please try again.");
-                    finish();
-                }
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            error.setText("Invalid Login. Please try again!");
         }
 
     }
