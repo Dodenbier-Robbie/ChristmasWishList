@@ -77,7 +77,7 @@ public class CreateAccount extends AppCompatActivity {
                 s= json.getString("info");
                 Log.d("Msg", json.getString("info"));
                 if(s.equals("success")){
-                    Intent list = new Intent(getApplicationContext(), ListView.class);
+                    Intent list = new Intent(getApplicationContext(), WishList.class);
                     list.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(list);
                     finish();

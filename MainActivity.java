@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 s= json.getString("info");
                 Log.d("Msg", json.getString("info"));
                 if(s.equals("success")){
-                    Intent login = new Intent(getApplicationContext(), ListView.class);
+                    Intent login = new Intent(getApplicationContext(), WishList.class);
                     login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(login);
                     finish();
