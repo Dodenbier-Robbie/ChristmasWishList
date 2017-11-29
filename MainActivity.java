@@ -8,18 +8,20 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
     EditText uname, password;
     Button submit, createAccount;
+    TextView error;
 
     JSONParser jParser = new JSONParser();
 
@@ -31,6 +33,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViewsById();
+        error.setText("");
         submit.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -56,6 +59,7 @@ public class MainActivity extends Activity {
         password = (EditText) findViewById(R.id.txtPass);
         submit = (Button) findViewById(R.id.button1);
         createAccount = (Button) findViewById(R.id.button2);
+        error = (TextView) findViewById(R.id.txtError);
     }
 
     private class Login extends AsyncTask<String, String, String>{
@@ -67,22 +71,25 @@ public class MainActivity extends Activity {
             String pass = password.getText().toString();
 
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("u",username));
-            params.add(new BasicNameValuePair("p",pass));
-            json = jParser.makeHttpRequest(url_login, "GET", params);
+            params.add(new BasicNameValuePair("username",username));
+            params.add(new BasicNameValuePair("password",pass));
+            json = jParser.makeHttpRequest(url_login, "POST", params);
             String s;
 
             try {
                 s= json.getString("info");
                 Log.d("Msg", json.getString("info"));
                 if(s.equals("success")){
-                    Intent login = new Intent(getApplicationContext(), CreateAccount.class);
+                    Intent login = new Intent(getApplicationContext(), ListView.class);
                     login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(login);
                     finish();
                 }
+                else {
+                    error.setText("Invalid username or password. Please try again.");
+                    finish();
+                }
             } catch (JSONException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
 
