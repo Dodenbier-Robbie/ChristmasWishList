@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("username",username));
             params.add(new BasicNameValuePair("password",pass));
-            json = jParser.makeHttpRequest(url_login, "POST", params);
+            json = jParser.makeHttpRequest(url_login, "GET", params);
             String s;
 
             try {
