@@ -24,7 +24,7 @@ import java.util.List;
 
 public class CreateAccount extends AppCompatActivity {
 
-    EditText firstname, lastname, email, age;
+    EditText firstname, lastname, email, age, uname, password;
     Button submit;
 
     JSONParser jParser = new JSONParser();
@@ -53,6 +53,8 @@ public class CreateAccount extends AppCompatActivity {
         lastname = (EditText) findViewById(R.id.txtLastName);
         email = (EditText) findViewById(R.id.txtEmail);
         age = (EditText) findViewById(R.id.txtAge);
+        uname = (EditText) findViewById(R.id.txtUser);
+        password = (EditText) findViewById(R.id.txtPass);
         submit = (Button) findViewById(R.id.button3);
     }
 
@@ -64,12 +66,16 @@ public class CreateAccount extends AppCompatActivity {
             String LastName = lastname.getText().toString();
             String Email = email.getText().toString();
             String Age = age.getText().toString();
+            String username = uname.getText().toString();
+            String pass = password.getText().toString();
 
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("firstname",FirstName));
             params.add(new BasicNameValuePair("lastname",LastName));
             params.add(new BasicNameValuePair("email",Email));
             params.add(new BasicNameValuePair("age",Age));
+            params.add(new BasicNameValuePair("username", username));
+            params.add(new BasicNameValuePair("password", pass));
             json = jParser.makeHttpRequest(url_login, "GET", params);
             String s;
 

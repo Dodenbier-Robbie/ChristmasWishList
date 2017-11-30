@@ -1,6 +1,7 @@
 package rdodenbier.byui.edu.christmaswishlist;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -33,5 +34,13 @@ public class WishList extends AppCompatActivity {
         myListView = (ListView) findViewById(R.id.myListView);
         addItem = (Button) findViewById(R.id.button4);
         thisContext = this;
+
+        addItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent createNewAccount = new Intent(getApplicationContext(), AddListItem.class);
+                startActivity(createNewAccount);
+            }
+        });
     }
 }
