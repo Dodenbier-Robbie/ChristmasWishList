@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     JSONParser jParser = new JSONParser();
 
     JSONObject json;
-    private static String url_login = "http://10.0.2.2:8080/AndroidLogin/login_servlet";
+    private static String url_login = "http://10.0.2.2:8080/AndroidLogin/login";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
