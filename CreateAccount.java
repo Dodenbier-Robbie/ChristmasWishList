@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -30,7 +29,7 @@ public class CreateAccount extends AppCompatActivity {
     JSONParser jParser = new JSONParser();
 
     JSONObject json;
-    private static String url_login = "http://10.0.2.2:8080/AndroidLogin/login_servlet";
+    private static String url_login = "http://10.0.2.2:8080/AndroidLogin/add_user";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
