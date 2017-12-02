@@ -7,10 +7,17 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,6 +32,11 @@ public class WishList extends AppCompatActivity {
     Button addItem;
     Button btnLogout;
     Map<String, String> wishListMap = new LinkedHashMap<String, String>();
+
+    JSONParser jParser = new JSONParser();
+
+    JSONObject json;
+    private static String url_login = "http://10.0.2.2:8080/AndroidLogin/get_wishlist";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,5 +66,27 @@ public class WishList extends AppCompatActivity {
                 finish();
             }
         });
+
+        try {
+            String jsonInput = "[\"itemCategory\", \"Toy\", \"itemDetail\", \"Test\"]";
+            JSONArray jsonArray = new JSONArray(jsonInput);
+            JSONObject jsonObject;
+            int length = jsonArray.length();
+            List<String> listContents = new ArrayList<String>(length);
+
+            for (int i = 0; i < length; i++) {
+                jsonArray = jsonArray.getJSONArray(i);
+                jsonObject = jsonArray.getJSONObject(0);;
+            }
+
+            //ListView myListView = (ListView) findViewById(R.id.myListView);
+            //myListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listContents));
+
+            //itemAdapter = new ItemAdapter(thisContext, listContents);
+            //myListView.setAdapter(itemAdapter);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }
