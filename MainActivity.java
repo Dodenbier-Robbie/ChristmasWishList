@@ -38,8 +38,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View arg0) {
-                // execute method invokes doInBackground() where we open a Http URL connection using the given Servlet URL
-                //and get output response from InputStream and return it.
                 new Login().execute();
 
             }
@@ -66,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... args) {
-            // Getting username and password from user input
             String username = uname.getText().toString();
             String pass = password.getText().toString();
 

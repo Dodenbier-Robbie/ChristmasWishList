@@ -23,6 +23,7 @@ public class WishList extends AppCompatActivity {
     Context thisContext;
     ListView myListView;
     Button addItem;
+    Button btnLogout;
     Map<String, String> wishListMap = new LinkedHashMap<String, String>();
 
     @Override
@@ -33,6 +34,7 @@ public class WishList extends AppCompatActivity {
         Resources res = getResources();
         myListView = (ListView) findViewById(R.id.myListView);
         addItem = (Button) findViewById(R.id.button4);
+        btnLogout = (Button) findViewById(R.id.button5);
         thisContext = this;
 
         addItem.setOnClickListener(new View.OnClickListener() {
@@ -40,6 +42,16 @@ public class WishList extends AppCompatActivity {
             public void onClick(View v) {
                 Intent createNewAccount = new Intent(getApplicationContext(), AddListItem.class);
                 startActivity(createNewAccount);
+            }
+        });
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View arg0) {
+                Intent login = new Intent(getApplicationContext(), MainActivity.class);
+                login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(login);
+                finish();
             }
         });
     }
