@@ -87,7 +87,6 @@ public class WishList extends AppCompatActivity {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             json = jParser.makeHttpRequest(url_login, "GET", params);
             try {
-                //String jsonInput = "{\"itemCategory\": \"Toy\", \"itemDetail\": \"Test\"}";
 
                 JSONArray jArray = json.getJSONArray(("wishList"));
 
