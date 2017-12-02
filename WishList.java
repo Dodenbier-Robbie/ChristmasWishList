@@ -5,13 +5,16 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -71,36 +74,51 @@ public class WishList extends AppCompatActivity {
         new GetData().execute();
     }
 
-    private class GetData extends AsyncTask<String, String, String> {
+    private class GetData extends AsyncTask<Void, Void, Void> {
 
         @Override
-        protected String doInBackground(String... arg0) {
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Toast.makeText(thisContext,"List Data is downloading",Toast.LENGTH_LONG).show();
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             json = jParser.makeHttpRequest(url_login, "GET", params);
-            String jsonInput;
             try {
                 //String jsonInput = "{\"itemCategory\": \"Toy\", \"itemDetail\": \"Test\"}";
-                jsonInput = json.getString("info");
-                JSONObject jsonObj = new JSONObject(jsonInput);
 
-                String itemCat = jsonObj.getString("itemCategory");
-                String itemDet = jsonObj.getString("itemDetail");
+                JSONArray jArray = json.getJSONArray(("wishList"));
 
-                HashMap<String, String> list = new HashMap<>();
-                list.put("itemCategory", itemCat);
-                list.put("itemDetail", itemDet);
+                for(int i = 0; i < jArray.length(); i++) {
 
-                wishList.add(list);
+                    JSONObject obj = jArray.getJSONObject(i);
+                    String itemCat = obj.getString("itemCategory");
+                    String itemDet = obj.getString("itemDetail");
 
-                ListAdapter adapter = new SimpleAdapter(thisContext, wishList, R.layout.item_layout, new String[]{ "itemCategory","itemDetail"},
-                        new int[]{R.id.itemCategoryTextView, R.id.itemDetailTextView});
-                lv.setAdapter(adapter);
+                    HashMap<String, String> list = new HashMap<>();
+                    list.put("itemCategory", itemCat);
+                    list.put("itemDetail", itemDet);
+
+                    wishList.add(list);
+
+                }
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            ListAdapter adapter = new SimpleAdapter(thisContext, wishList, R.layout.item_layout, new String[]{ "itemCategory","itemDetail"},
+                    new int[]{R.id.itemCategoryTextView, R.id.itemDetailTextView});
+            lv.setAdapter(adapter);
         }
     }
 }
