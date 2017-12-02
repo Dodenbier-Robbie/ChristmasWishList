@@ -2,23 +2,22 @@ package rdodenbier.byui.edu.christmaswishlist;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
-import org.json.JSONArray;
+import org.apache.http.NameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by rdodenbier on 11/29/17.
@@ -26,28 +25,30 @@ import java.util.Map;
 
 public class WishList extends AppCompatActivity {
 
-    ItemAdapter itemAdapter;
     Context thisContext;
-    ListView myListView;
     Button addItem;
     Button btnLogout;
-    Map<String, String> wishListMap = new LinkedHashMap<String, String>();
 
     JSONParser jParser = new JSONParser();
 
     JSONObject json;
     private static String url_login = "http://10.0.2.2:8080/AndroidLogin/get_wishlist";
+    private ListView lv;
+    ArrayList<HashMap<String, String>> wishList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_view);
 
-        Resources res = getResources();
-        myListView = (ListView) findViewById(R.id.myListView);
         addItem = (Button) findViewById(R.id.button4);
         btnLogout = (Button) findViewById(R.id.button5);
         thisContext = this;
+
+        wishList = new ArrayList<>();
+        lv = (ListView) findViewById(R.id.myListView);
+
+
 
         addItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,26 +68,39 @@ public class WishList extends AppCompatActivity {
             }
         });
 
-        try {
-            String jsonInput = "[\"itemCategory\", \"Toy\", \"itemDetail\", \"Test\"]";
-            JSONArray jsonArray = new JSONArray(jsonInput);
-            JSONObject jsonObject;
-            int length = jsonArray.length();
-            List<String> listContents = new ArrayList<String>(length);
+        new GetData().execute();
+    }
 
-            for (int i = 0; i < length; i++) {
-                jsonArray = jsonArray.getJSONArray(i);
-                jsonObject = jsonArray.getJSONObject(0);;
+    private class GetData extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... arg0) {
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            json = jParser.makeHttpRequest(url_login, "GET", params);
+            String jsonInput;
+            try {
+                //String jsonInput = "{\"itemCategory\": \"Toy\", \"itemDetail\": \"Test\"}";
+                jsonInput = json.getString("info");
+                JSONObject jsonObj = new JSONObject(jsonInput);
+
+                String itemCat = jsonObj.getString("itemCategory");
+                String itemDet = jsonObj.getString("itemDetail");
+
+                HashMap<String, String> list = new HashMap<>();
+                list.put("itemCategory", itemCat);
+                list.put("itemDetail", itemDet);
+
+                wishList.add(list);
+
+                ListAdapter adapter = new SimpleAdapter(thisContext, wishList, R.layout.item_layout, new String[]{ "itemCategory","itemDetail"},
+                        new int[]{R.id.itemCategoryTextView, R.id.itemDetailTextView});
+                lv.setAdapter(adapter);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
 
-            //ListView myListView = (ListView) findViewById(R.id.myListView);
-            //myListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listContents));
-
-            //itemAdapter = new ItemAdapter(thisContext, listContents);
-            //myListView.setAdapter(itemAdapter);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
+            return null;
         }
     }
 }
