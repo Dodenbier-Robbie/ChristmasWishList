@@ -22,7 +22,6 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
     EditText uname, password;
     Button submit, createAccount;
-    TextView error;
 
     JSONParser jParser = new JSONParser();
 
@@ -34,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViewsById();
-        error.setText("");
         submit.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -58,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
         password = (EditText) findViewById(R.id.txtPass);
         submit = (Button) findViewById(R.id.button1);
         createAccount = (Button) findViewById(R.id.button2);
-        error = (TextView) findViewById(R.id.txtError);
     }
 
     private class Login extends AsyncTask<String, String, String>{
