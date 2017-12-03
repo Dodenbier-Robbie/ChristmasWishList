@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     EditText uname, password;
@@ -62,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
 
     private class Login extends AsyncTask<String, String, String>{
 
+        String success;
+
         @Override
         protected String doInBackground(String... args) {
             String username = uname.getText().toString();
@@ -77,23 +80,28 @@ public class MainActivity extends AppCompatActivity {
                 s= json.getString("info");
                 Log.d("Msg", json.getString("info"));
                 if(s.equals("success")){
-                    Intent login = new Intent(getApplicationContext(), WishList.class);
-                    login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(login);
-                    finish();
+                    success = "success";
+                } else {
+                    success = "fail";
                 }
-
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            return null;
+            return success;
         }
 
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(String success) {
+            if(success.equals("success")) {
+                Intent login = new Intent(getApplicationContext(), WishList.class);
+                login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(login);
+                finish();
+            } else {
+                Toast.makeText(MainActivity.this,"Login Failed. Please try again.",Toast.LENGTH_SHORT).show();
+            }
 
-            error.setText("Invalid Login. Please try again!");
         }
 
     }
