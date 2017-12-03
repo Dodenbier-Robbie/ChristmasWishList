@@ -78,7 +78,7 @@ public class WishList extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Toast.makeText(thisContext,"List Data is downloading",Toast.LENGTH_SHORT).show();
+            Toast.makeText(thisContext,"Christmas List is downloading",Toast.LENGTH_SHORT).show();
 
         }
 

@@ -80,9 +80,9 @@ public class MainActivity extends AppCompatActivity {
                 s= json.getString("info");
                 Log.d("Msg", json.getString("info"));
                 if(s.equals("success")){
-                    success = "success";
+                    success = "true";
                 } else {
-                    success = "fail";
+                    success = "false";
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String success) {
-            if(success.equals("success")) {
+            if(success.equals("true")) {
                 Intent login = new Intent(getApplicationContext(), WishList.class);
                 login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(login);
