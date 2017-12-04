@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -60,6 +61,8 @@ public class CreateAccount extends AppCompatActivity {
 
     private class CreateUserAccount extends AsyncTask<String,String,String> {
 
+        String success;
+
         @Override
         protected String doInBackground(String... args) {
             String FirstName = firstname.getText().toString();
@@ -83,16 +86,29 @@ public class CreateAccount extends AppCompatActivity {
                 s= json.getString("info");
                 Log.d("Msg", json.getString("info"));
                 if(s.equals("success")){
-                    Intent list = new Intent(getApplicationContext(), WishList.class);
-                    list.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(list);
-                    finish();
+                    success = "true";
+                }
+                else {
+                    success = "false";
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            return null;
+            return success;
+        }
+
+        @Override
+        protected void onPostExecute(String success) {
+
+            if(success.equals("true")) {
+                Intent list = new Intent(getApplicationContext(), WishList.class);
+                list.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(list);
+                finish();
+            } else {
+                Toast.makeText(CreateAccount.this,"Create Account Failed. Please try again..",Toast.LENGTH_SHORT).show();
+            }
         }
 
     }
