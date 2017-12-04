@@ -26,8 +26,8 @@ public class MainActivity extends AppCompatActivity {
     JSONParser jParser = new JSONParser();
 
     JSONObject json;
-    //private static String url_login = "http://10.0.2.2:8080/AndroidLogin/login";
-    private static String url_login = "http://192.168.1.15:8080/AndroidLogin/login";
+    private static String url_login = "http://10.0.2.2:8080/AndroidLogin/login";
+    //private static String url_login = "http://192.168.1.15:8080/AndroidLogin/login";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,9 +79,12 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("Msg", json.getString("info"));
                 if(s.equals("success")){
                     success = "true";
-                } else {
+                } else if(s.equals("fail")) {
                     success = "false";
+                } else {
+                    success = "refused";
                 }
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -96,8 +99,10 @@ public class MainActivity extends AppCompatActivity {
                 login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(login);
                 finish();
-            } else {
+            } else if(success.equals(("fail"))) {
                 Toast.makeText(MainActivity.this,"Login Failed. Please try again.",Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(MainActivity.this,"Connection refused. Please try again.",Toast.LENGTH_SHORT).show();
             }
 
         }
