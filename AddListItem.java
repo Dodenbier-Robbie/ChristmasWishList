@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -59,6 +60,8 @@ public class AddListItem extends AppCompatActivity {
 
     private class AddWishListItem extends AsyncTask<String, String, String> {
 
+        String success;
+
         @Override
         protected String doInBackground(String... args) {
             String itemCat = String.valueOf(category.getSelectedItem());
@@ -74,9 +77,9 @@ public class AddListItem extends AppCompatActivity {
                 s= json.getString("info");
                 Log.d("Msg", json.getString("info"));
                 if(s.equals("success")){
-                    Intent listItems = new Intent(getApplicationContext(), WishList.class);
-                    startActivity(listItems);
-                    finish();
+                    success = "true";
+                } else {
+                    success = "false";
                 }
 
             } catch (JSONException e) {
@@ -84,6 +87,17 @@ public class AddListItem extends AppCompatActivity {
             }
 
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(String success) {
+            if (success.equals("true")) {
+                Intent listItems = new Intent(getApplicationContext(), WishList.class);
+                startActivity(listItems);
+                finish();
+            } else {
+                Toast.makeText(AddListItem.this,"Error saving item. Please try again.",Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }
