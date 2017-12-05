@@ -86,7 +86,7 @@ public class AddListItem extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            return null;
+            return success;
         }
 
         @Override

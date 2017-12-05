@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                 login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(login);
                 finish();
-            } else if(success.equals(("fail"))) {
+            } else if(success.equals(("false"))) {
                 Toast.makeText(MainActivity.this,"Login Failed. Please try again.",Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(MainActivity.this,"Connection refused. Please try again.",Toast.LENGTH_SHORT).show();
