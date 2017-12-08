@@ -34,8 +34,8 @@ public class WishList extends AppCompatActivity {
     JSONParser jParser = new JSONParser();
 
     JSONObject json;
-    private static String url_login = "http://10.0.2.2:8080/AndroidLogin/get_wishlist";
-    //private static String url_login = "http://192.168.1.15:8080/AndroidLogin/get_wishlist";
+    //private static String url_login = "http://10.0.2.2:8080/AndroidLogin/get_wishlist";
+    private static String url_login = "http://71.199.47.143:8080/AndroidLogin/get_wishlist";
 
     private ListView lv;
     ArrayList<HashMap<String, String>> wishList;
